@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	
+
 	def new
 	  @user = User.new
 	end
@@ -7,10 +7,11 @@ class UsersController < ApplicationController
 	def create
 	    @user = User.new(user_params)
 	    if @user.save
-	      auto_login(@user)
-	      redirect_to new_user_url, notice: "Signed up!"
+	    	auto_login(@user)
+	    	redirect_to new_user_url, notice: "Signed up!"
 	    else
-	      render "new"
+		  	flash.now[:alert] = 'Login failed'
+		    render "new"
 	    end
 	end
 
@@ -19,6 +20,8 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
+		logout
+    	redirect_to(:users, notice: 'Logged out!')
 	end
 
 	private
